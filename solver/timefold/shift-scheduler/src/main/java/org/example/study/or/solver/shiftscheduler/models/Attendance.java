@@ -30,6 +30,14 @@ public class Attendance {
         return id;
     }
 
+    public BusinessDay getBusinessDay() {
+        return businessDay;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
     public void setBusinessDay(BusinessDay businessDay) {
         this.businessDay = businessDay;
     }

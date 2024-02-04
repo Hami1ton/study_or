@@ -8,7 +8,7 @@ import ai.timefold.solver.core.api.domain.solution.ProblemFactCollectionProperty
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 
 @PlanningSolution
-public class WorkSchedule {
+public class ShiftSchedule {
     
     @ProblemFactCollectionProperty
     private List<BusinessDay> businessDays;
@@ -22,11 +22,11 @@ public class WorkSchedule {
     @PlanningScore
     private HardSoftScore score;
 
-    public WorkSchedule(){
+    public ShiftSchedule(){
 
     }
 
-    public WorkSchedule(List<BusinessDay> businessDays, List<Employee> employees, List<Attendance> attendances) {
+    public ShiftSchedule(List<BusinessDay> businessDays, List<Employee> employees, List<Attendance> attendances) {
         this.businessDays = businessDays;
         this.employees = employees;
         this.attendances = attendances;    
