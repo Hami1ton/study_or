@@ -13,17 +13,18 @@ repositories {
 }
 
 ext {
-    droolsVersion = '8.41.0.Final'
+    timefoldSolverVersion = "1.6.0"
+    logbackVersion = "1.4.14"
 }
 
 dependencies {
-    // drools
-    implementation group: 'org.drools', name: 'drools-mvel', version: droolsVersion
-    implementation group: 'org.drools', name: 'drools-xml-support', version: droolsVersion
-    implementation group: 'org.drools', name: 'drools-ruleunits-engine', version: droolsVersion
+    // timefold
+    implementation platform("ai.timefold.solver:timefold-solver-bom:${timefoldSolverVersion}")
+    implementation "ai.timefold.solver:timefold-solver-core"
+    testImplementation "ai.timefold.solver:timefold-solver-test"
 
     // logging
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.32'
+    runtimeOnly "ch.qos.logback:logback-classic:${logbackVersion}"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testImplementation 'org.junit.platform:junit-platform-launcher:1.9.3'
