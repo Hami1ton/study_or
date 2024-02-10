@@ -60,7 +60,7 @@ public class ShiftSchedule {
         File file = new File("public/ShiftSchedule.txt");
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
             for(var shift : shifts) {
-                bw.write(shift.getBusinessDay().getDate() + "," + shift.getEmployee().getName());
+                bw.write(shift.getBusinessDay().getDate() + "," + shift.getBusinessDay().getDayOfWeek() + "," + shift.getEmployee().getName());
                 bw.newLine();
             }
         } catch (IOException e) {

@@ -9,6 +9,7 @@ import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
 import ai.timefold.solver.core.api.score.stream.Joiners;
 import static ai.timefold.solver.core.api.score.stream.ConstraintCollectors.*;
 
+
 public class ShiftScheduleConstraintProvider implements ConstraintProvider {
 
     @Override
@@ -17,6 +18,7 @@ public class ShiftScheduleConstraintProvider implements ConstraintProvider {
             // Hard constraints
             employeeConflict(constraintFactory),
             lessThanTwoEmployees(constraintFactory),
+            allBusinessDaysAreShifted(constraintFactory),
             penalizeFShift(constraintFactory),
             // Soft constraints
             rewordAShift(constraintFactory),
@@ -30,16 +32,25 @@ public class ShiftScheduleConstraintProvider implements ConstraintProvider {
                     Joiners.equal(Shift::getEmployee),
                     Joiners.equal(shift -> shift.getBusinessDay().getDate()))
                 .penalize(HardSoftScore.ONE_HARD)
-                .asConstraint("同一営業日に同一社員は1回のみカウントできる");
+                .asConstraint("1営業日に同一社員を複数カウントできない");
     }
 
     private Constraint lessThanTwoEmployees(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Shift.class)
-                .groupBy(Shift::getEmployee, count())
-                .filter((employee, employeeCount) -> employeeCount != 2)    
+                .groupBy(Shift::getBusinessDay, count())
+                .filter((businessDay, count) -> count < 2)    
                 .penalize(HardSoftScore.ONE_HARD)
-                .asConstraint("同一営業日に社員は二人出社しなければならない");
+                .asConstraint("1営業日に社員は2人以上出社しなければならない");
+    }
+
+    
+    private Constraint allBusinessDaysAreShifted(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEachIncludingNullVars(Shift.class)
+                .filter(shift -> shift.getBusinessDay() == null)
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("全営業日に誰かが出社している必要がある");
     }
 
     private Constraint penalizeFShift(ConstraintFactory factory) {
