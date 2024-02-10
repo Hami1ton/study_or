@@ -6,7 +6,7 @@ import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 
 
 @PlanningEntity
-public class Attendance {
+public class Shift {
 
     @PlanningId
     private Long id;
@@ -18,11 +18,11 @@ public class Attendance {
     private Employee employee;
 
 
-    public Attendance() {
+    public Shift() {
 
     }
 
-    public Attendance(Long id) {
+    public Shift(Long id) {
         this.id = id;
     }
 
@@ -47,7 +47,7 @@ public class Attendance {
     }
 
     public String toString() {
-        return "Attendance(" + id + ")"; 
+        return "Shift(" + id + ")"; 
     }
 
 }

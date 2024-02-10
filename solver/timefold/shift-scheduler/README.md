@@ -8,10 +8,12 @@
 
 ## model
 
+
 ```mermaid
 erDiagram
-    Attendance }|..|{ Employee : contains
-    Attendance ||..|| Business-Day:contains
+    "出社当番表(ShiftSchedule)" ||..|{ "出社当番(Shift)" : "出社当番表は出社当番データを集約する"
+    "出社当番(Shift)" o|..|| "営業日(BusinessDay)" : ""
+    "出社当番(Shift)" o|..|| "社員(Employee)":""
 ```
 
 ## constraints
@@ -19,6 +21,8 @@ erDiagram
 社員が出社して勤務する日にちを決定するためのに、スケジュール表を作成する。
 
 スケジュール表は、以下の制約を満たして作成する必要がある。
+このうち、Hard制約は必ずみたす必要がある。
+Soft制約はみたすことが望ましい制約である。
 
 |  #  |  制約種類  |  制約  |
 | ---- | ---- |---- |
