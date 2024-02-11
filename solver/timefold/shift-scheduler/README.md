@@ -5,6 +5,7 @@
 
 - jdk 17
 - gradle 8.6
+- timefold solver 1.6.0
 
 ## model
 

@@ -9,136 +9,154 @@
         table {
           border-collapse: collapse;
         }
-        th, td {
+        .shiftDateLine {
+          position: sticky;
+          top: 0;
+          left: 0;
+          border: 1px solid black;
+          padding: 8px;
+          text-align: center;
+          background: #f2f2f2;
+        }
+        th {
+          border: 1px solid black;
+          padding: 8px;
+          text-align: center;
+          background: #f2f2f2;
+        }
+        td {
           border: 1px solid black;
           padding: 8px;
           text-align: center;
         }
-      </style>
+        .holiday {
+          background: rgb(86, 84, 84);
+        }
+    </style>
 </head>
 <body>
-
     <table id="shiftSchedule">
-        <input type="file" name="csv_import" id="inputFile">
-        <thead>
-          <tr>
-            <th>Employee</th>
-            <th>2024-02-01</th>
-            <th>2024-02-02</th>
-            <th>2024-02-03</th>
-            <th>2024-02-04</th>
-            <th>2024-02-05</th>
-            <th>2024-02-06</th>
-            <th>2024-02-07</th>
-            <th>2024-02-08</th>
-            <th>2024-02-09</th>
-            <th>2024-02-10</th>
-            <th>2024-02-11</th>
-            <th>2024-02-12</th>
-            <th>2024-02-13</th>
-            <th>2024-02-14</th>
-            <th>2024-02-15</th>
-            <th>2024-02-16</th>
-            <th>2024-02-17</th>
-            <th>2024-02-18</th>
-            <th>2024-02-19</th>
-            <th>2024-02-20</th>
-            <th>2024-02-21</th>
-            <th>2024-02-22</th>
-            <th>2024-02-23</th>
-            <th>2024-02-24</th>
-            <th>2024-02-25</th>
-            <th>2024-02-26</th>
-            <th>2024-02-27</th>
-            <th>2024-02-28</th>
-            <th>2024-02-29</th>
-          </tr>
-          <tr>
-            <th></th>
-            <th>木</th>
-            <th>金</th>
-            <th>土</th>
-            <th>日</th>
-            <th>月</th>
-            <th>火</th>
-            <th>水</th>
-            <th>木</th>
-            <th>金</th>
-            <th>土</th>
-            <th>日</th>
-            <th>月</th>
-            <th>火</th>
-            <th>水</th>
-            <th>木</th>
-            <th>金</th>
-            <th>土</th>
-            <th>日</th>
-            <th>月</th>
-            <th>火</th>
-            <th>水</th>
-            <th>木</th>
-            <th>金</th>
-            <th>土</th>
-            <th>日</th>
-            <th>月</th>
-            <th>火</th>
-            <th>水</th>
-            <th>木</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- ファイルデータ表示部分 -->
-        </tbody>
-      </table>
+      <input type="file" name="csv_import" id="inputFile">
+      <thead>
+        <tr class="shiftDateLine">
+          <th>Employee</th>
+          <th>2024-02-01</th>
+          <th>2024-02-02</th>
+          <th>2024-02-03</th>
+          <th>2024-02-04</th>
+          <th>2024-02-05</th>
+          <th>2024-02-06</th>
+          <th>2024-02-07</th>
+          <th>2024-02-08</th>
+          <th>2024-02-09</th>
+          <th>2024-02-10</th>
+          <th>2024-02-11</th>
+          <th>2024-02-12</th>
+          <th>2024-02-13</th>
+          <th>2024-02-14</th>
+          <th>2024-02-15</th>
+          <th>2024-02-16</th>
+          <th>2024-02-17</th>
+          <th>2024-02-18</th>
+          <th>2024-02-19</th>
+          <th>2024-02-20</th>
+          <th>2024-02-21</th>
+          <th>2024-02-22</th>
+          <th>2024-02-23</th>
+          <th>2024-02-24</th>
+          <th>2024-02-25</th>
+          <th>2024-02-26</th>
+          <th>2024-02-27</th>
+          <th>2024-02-28</th>
+          <th>2024-02-29</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>木</th>
+          <th>金</th>
+          <th class="holiday">土</th>
+          <th class="holiday">日</th>
+          <th>月</th>
+          <th>火</th>
+          <th>水</th>
+          <th>木</th>
+          <th>金</th>
+          <th class="holiday">土</th>
+          <th class="holiday">日</th>
+          <th class="holiday">月</th>
+          <th>火</th>
+          <th>水</th>
+          <th>木</th>
+          <th>金</th>
+          <th class="holiday">土</th>
+          <th class="holiday">日</th>
+          <th>月</th>
+          <th>火</th>
+          <th>水</th>
+          <th>木</th>
+          <th class="holiday">金</th>
+          <th class="holiday">土</th>
+          <th class="holiday">日</th>
+          <th>月</th>
+          <th>火</th>
+          <th>水</th>
+          <th>木</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ファイルデータ表示部分 -->
+      </tbody>
+    </table>
 
     <script>
-        const input = document.getElementById('inputFile');
-        input.addEventListener('change', (e) => {
-            const reader = new FileReader();
-            reader.readAsText(e.target.files[0]);
+      const input = document.getElementById('inputFile');
+      input.addEventListener('change', (e) => {
+        const reader = new FileReader();
+        reader.readAsText(e.target.files[0]);
 
-            reader.onload = function(event) {
-                result = event.target.result;
-                // CSVデータを整形
-                const csvData = result.split('\n');
-                // テーブル要素の参照を取得
-                const table = document.getElementById('shiftSchedule');
+        reader.onload = function(event) {
 
-                // 描画
-                const employees = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"];
-                employees.forEach(employee => {
-                  // 社員
-                  const cellEmployee = document.createElement('td');
-                  const rowElement = document.createElement('tr');
-                  cellEmployee.textContent = employee;
-                  rowElement.appendChild(cellEmployee);
+          result = event.target.result;
+          // CSVデータを整形
+          const csvData = result.split('\n');
+          // テーブル要素の参照を取得
+          const table = document.getElementById('shiftSchedule');
 
-                  // 1社員のシフトを集約
-                  const employee_shift_dates = [];
-                  csvData.forEach(row => {
-                    const [csv_shiftDate, csv_dayOfWeek, csv_employee] = row.split(',');
-                    // console.log(csv_employee);
-                    // console.log(employee);
-                    if (!csv_employee) {
-                      return;
-                    }
-                    if (csv_employee.substr(0,1) === employee) {
-                      employee_shift_dates.push(parseInt(csv_shiftDate.split('-')[2]));
-                    }
-                  });
-                  
-                  for (let day = 1; day <= 29; day++) {
-                    const cell = document.createElement('td');
-                    const currentDate = new Date(`2024-02-${day}`);
-                    if (employee_shift_dates.includes(currentDate.getDate())) {
-                        cell.textContent = '◯';
-                    }
-                    rowElement.appendChild(cell);
-                  }
-                    table.querySelector('tbody').appendChild(rowElement);
-                });
-            };
-        });
-      </script>
+          // 描画
+          const employees = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"];
+          employees.forEach(employee => {
+            // 社員
+            const cellEmployee = document.createElement('td');
+            const rowElement = document.createElement('tr');
+            cellEmployee.textContent = employee;
+            rowElement.appendChild(cellEmployee);
+
+            // 1社員のシフトを集約 (ex)[1, 2, 5]
+            const employee_shift_dates = [];
+            csvData.forEach(row => {
+              const [csv_shiftDate, csv_dayOfWeek, csv_employee] = row.split(',');
+              // console.log(csv_employee);
+              // console.log(employee);
+              if (!csv_employee) {
+                return;
+              }
+              if (csv_employee.substr(0,1) === employee) {
+                employee_shift_dates.push(parseInt(csv_shiftDate.split('-')[2]));
+              }
+            });
+            
+            for (let day = 1; day <= 29; day++) {
+              const cell = document.createElement('td');
+              const currentDate = new Date(`2024-02-${day}`);
+              if (employee_shift_dates.includes(currentDate.getDate())) {
+                  cell.textContent = '◯';
+              }
+              rowElement.appendChild(cell);
+            }
+            table.querySelector('tbody').appendChild(rowElement);
+          });
+        };
+      });
+    </script>
 </body>
 </html>
