@@ -1,6 +1,9 @@
 package org.example.study.or.solver.shiftscheduler;
 
 import java.time.DayOfWeek;
+import java.util.function.Function;
+import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
+import org.example.study.or.solver.shiftscheduler.models.BusinessDay;
 import org.example.study.or.solver.shiftscheduler.models.Shift;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.score.stream.Constraint;
@@ -18,6 +21,7 @@ public class ShiftScheduleConstraintProvider implements ConstraintProvider {
             // Hard constraints
             employeeConflict(constraintFactory),
             lessThanTwoEmployees(constraintFactory),
+            penalizeEmployeeShiftTooMany(constraintFactory),
             allBusinessDaysAreShifted(constraintFactory),
             penalizeFShift(constraintFactory),
             // Soft constraints
@@ -44,11 +48,28 @@ public class ShiftScheduleConstraintProvider implements ConstraintProvider {
                 .asConstraint("1営業日に社員は2人以上出社しなければならない");
     }
 
-    
+    private Constraint penalizeEmployeeShiftTooMany(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(Shift.class)
+                .groupBy(Shift::getEmployee, count())
+                .filter((businessDay, count) -> count > 4)    
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("1社員の出社数は4以下でないといけない");
+    }
+
+
     private Constraint allBusinessDaysAreShifted(ConstraintFactory constraintFactory) {
         return constraintFactory
-                .forEachIncludingNullVars(Shift.class)
-                .filter(shift -> shift.getBusinessDay() == null)
+                .forEach(BusinessDay.class)
+                .join(Shift.class, equal(Function.identity(), Shift::getBusinessDay))
+                .concat(
+                    constraintFactory.forEach(BusinessDay.class)
+                    .ifNotExists(Shift.class, equal(Function.identity(), Shift::getBusinessDay))
+                )
+                .groupBy((businessDay, shift) -> businessDay,
+                   conditionally((businessDay, shift) -> shift != null, countBi())
+                )
+                .filter((businessDay, shiftCount) -> shiftCount < 1)
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("全営業日に誰かが出社している必要がある");
     }
@@ -69,7 +90,7 @@ public class ShiftScheduleConstraintProvider implements ConstraintProvider {
                         || shift.getBusinessDay().getDayOfWeek().equals(DayOfWeek.WEDNESDAY)
                 ))
                 .reward(HardSoftScore.ONE_SOFT)
-                .asConstraint("Aさんは子供の学校への送迎のため、月火水がいい");
+                .asConstraint("Aさんは子供の学校への送迎のため、月火水が望ましい");
     }
 
     private Constraint rewordDShift(ConstraintFactory factory) {
@@ -77,7 +98,7 @@ public class ShiftScheduleConstraintProvider implements ConstraintProvider {
                 .filter(shift -> shift.getEmployee().getName().equals("D")
                     && shift.getBusinessDay().getDayOfWeek().equals(DayOfWeek.FRIDAY))
                 .reward(HardSoftScore.ONE_SOFT)
-                .asConstraint("Dさんは仕事の後飲みに行きたいので金曜日がいい");
+                .asConstraint("Dさんは仕事の後飲みに行きたいので金曜日が望ましい");
     }
 
 }
